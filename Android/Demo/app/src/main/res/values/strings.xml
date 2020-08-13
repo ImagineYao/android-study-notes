@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Demo</string>
+    <string name="title_home">首页</string>
+    <string name="title_mine">我的</string>
+    <string name="open_app">打开</string>
+    <string name="is_loading">数据加载中……</string>
+    <string name="open_in_market">在应用商店打开</string>
+    <string name="origin_password">原密码</string>
+    <string name="new_password">新密码</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="confirm_modify">确认更改</string>
+    <string name="net_unavailable">请检查网络连接</string>
+</resources>
