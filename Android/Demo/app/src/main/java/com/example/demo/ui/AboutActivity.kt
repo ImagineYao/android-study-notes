@@ -1,7 +1,8 @@
-package com.example.demo
+package com.example.demo.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.demo.R
 import com.example.demo.utils.ActivityManager
 
 class AboutActivity : AppCompatActivity() {

@@ -14,11 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.demo.MainActivity
 import com.example.demo.R
-import com.example.demo.adapter.AppListAdapter
-import com.example.demo.data.AppCallbackListener
-import com.example.demo.data.AppInfo
-import com.example.demo.data.AppType
-import com.example.demo.data.AppUtil
+import com.example.demo.utils.AppCallbackListener
+import com.example.demo.bean.AppInfo
+import com.example.demo.bean.AppType
+import com.example.demo.utils.AppUtil
 import kotlin.concurrent.thread
 
 class AppsFragment(private val position: Int) : Fragment() {

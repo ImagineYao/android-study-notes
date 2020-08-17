@@ -3,9 +3,7 @@ package com.example.demo.utils
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.example.demo.data.AppCallbackListener
-import com.example.demo.data.AppInfo
-import com.example.demo.data.AppUtil
+import com.example.demo.bean.AppInfo
 
 class AppInstallReceiver: BroadcastReceiver(){
 

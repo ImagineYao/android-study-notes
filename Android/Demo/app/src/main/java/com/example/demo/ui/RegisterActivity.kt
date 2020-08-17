@@ -1,10 +1,11 @@
-package com.example.demo
+package com.example.demo.ui
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import com.example.demo.R
 import com.example.demo.utils.ActivityManager
 
 class RegisterActivity : AppCompatActivity() {

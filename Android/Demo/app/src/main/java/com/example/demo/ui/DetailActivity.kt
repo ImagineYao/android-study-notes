@@ -1,4 +1,4 @@
-package com.example.demo
+package com.example.demo.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -14,9 +14,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.demo.adapter.ADAPTER_POSITION
-import com.example.demo.adapter.FRAGMENT_POSITION
-import com.example.demo.data.AppInfo
+import com.example.demo.R
+import com.example.demo.ui.home.ADAPTER_POSITION
+import com.example.demo.ui.home.FRAGMENT_POSITION
+import com.example.demo.bean.AppInfo
 import com.example.demo.ui.home.AppsFragment
 import com.example.demo.utils.ActivityManager
 

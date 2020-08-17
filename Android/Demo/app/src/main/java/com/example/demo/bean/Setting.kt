@@ -1,4 +1,4 @@
-package com.example.demo.data
+package com.example.demo.bean
 
 import android.graphics.drawable.Drawable
 

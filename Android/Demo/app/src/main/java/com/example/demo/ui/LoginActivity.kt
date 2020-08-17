@@ -1,4 +1,4 @@
-package com.example.demo
+package com.example.demo.ui
 
 import android.content.Context
 import android.content.Intent
@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.example.demo.MainActivity
+import com.example.demo.R
 import com.example.demo.utils.ActivityManager
 import kotlin.properties.Delegates
 

@@ -1,4 +1,4 @@
-package com.example.demo
+package com.example.demo.ui
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
+import com.example.demo.R
 import com.example.demo.utils.ActivityManager
 
 class ModifyPasswordActivity : AppCompatActivity() {

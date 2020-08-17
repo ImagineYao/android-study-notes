@@ -1,4 +1,4 @@
-package com.example.demo.adapter
+package com.example.demo.ui.home
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -8,10 +8,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.demo.DetailActivity
+import com.example.demo.ui.DetailActivity
 import com.example.demo.MainActivity
 import com.example.demo.R
-import com.example.demo.data.AppInfo
+import com.example.demo.bean.AppInfo
 
 const val FRAGMENT_POSITION: String = "Fragment Position"
 const val ADAPTER_POSITION: String = "Item Position"

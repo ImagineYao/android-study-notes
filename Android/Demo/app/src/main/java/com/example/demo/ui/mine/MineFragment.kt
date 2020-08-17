@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.R
-import com.example.demo.data.Setting
+import com.example.demo.bean.Setting
 
 class MineFragment : Fragment() {
     private lateinit var mAdapter: MineFragmentAdapter

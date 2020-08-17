@@ -1,7 +1,6 @@
 package com.example.demo.ui.mine
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +8,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.*
-import com.example.demo.data.AppUtil
-import com.example.demo.data.Setting
+import com.example.demo.utils.AppUtil
+import com.example.demo.bean.Setting
+import com.example.demo.ui.AboutActivity
+import com.example.demo.ui.LoginActivity
+import com.example.demo.ui.ModifyPasswordActivity
 import com.example.demo.utils.ActivityManager
 
 class MineFragmentAdapter(private val items: ArrayList<Setting>) :

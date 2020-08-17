@@ -1,23 +1,11 @@
-package com.example.demo.data
+package com.example.demo.utils
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
+import com.example.demo.bean.AppInfo
+import com.example.demo.bean.AppType
 import kotlin.concurrent.thread
-
-enum class AppType {
-    USER_APP,
-    SYSTEM_APP
-}
-
-data class AppInfo(
-    val packageName: String,
-    val appIcon: Drawable,
-    val appName: String,
-    val versionName: String,
-    val appType: AppType
-)
 
 interface AppCallbackListener {
     fun onSuccess(apps: ArrayList<AppInfo>)
