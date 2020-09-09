@@ -296,7 +296,7 @@ I/  MyLayout:   dispatchTouchEvent ACTION_DOWN Start
 I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN Start
 I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN End with false
 I/  MyLayout:   dispatchTouchEvent ACTION_DOWN End with true
-** I/Activity:     dispatchTouchEvent ACTION_DOWN End with true **
+I/Activity:     dispatchTouchEvent ACTION_DOWN End with true
 I/Activity:     dispatchTouchEvent ACTION_UP Start
 I/  MyLayout:   dispatchTouchEvent ACTION_UP Start
 I/  MyLayout:   onInterceptTouchEvent ACTION_UP Start
