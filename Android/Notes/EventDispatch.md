@@ -6,12 +6,12 @@
 
 事件通常指触摸或点击事件，用户触摸屏幕时产生 `Touch` 事件。`Touch` 事件的相关细节封装于 `MotionEvent` 对象中。
 
-| 事件类型                   | 具体动作        |
-| ------------------------- | ------------- |
+| 事件类型                  | 具体动作         |
+| ------------------------- | ---------------- |
 | MotionEvent.ACTION_DOWN   | 按下事件（开始） |
 | MotionEvent.ACTION_UP     | 抬起事件（结束） |
-| MotionEvent.ACTION_MOVE   | 滑动事件        |
-| MotionEvent.ACTION_CANCEL | 取消事件        |
+| MotionEvent.ACTION_MOVE   | 滑动事件         |
+| MotionEvent.ACTION_CANCEL | 取消事件         |
 
 #### 2. 分发流程
 
@@ -29,7 +29,7 @@
 | onInterceptTouchEvent(event: MotionEvent?): Boolean | 进行事件拦截 |
 | onTouchEvent(event: MotionEvent?): Boolean          | 进行事件消耗 |
 
-三个方法之间的关系可以使用如下为代码表示：
+三个方法之间的关系可以使用如下伪代码表示：
 
 ```kotlin
 fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
@@ -113,11 +113,13 @@ class MyLayout : FrameLayout {
 </com.example.eventdispatch.ui.MyLayout>
 ```
 
+<img src="../Screenshot/eventdispatch/my_activity.png" style="zoom:25%;" />
+
 当MyLayout `dispatchTouchEvent` 返回false时，表示其不对事件进行分发。ACTION_DOWN事件传递到MyLayout时，`dispatchTouchEvent` 被调用，返回false，事件返回给Activity，Activity的 `onTouchEvent` 被调用。当ACTION_MOVE或ACTION_UP事件到来时，由于上一个事件由Activity处理，因此该事件不再向下传递，直接交给Activity处理。点击MyLayout，打印的Log如下：
 
 ```
 I/Activity:     dispatchTouchEvent ACTION_DOWN Start
-I/  MyLayout:   dispatchTouchEvent ACTION_DOWN End with false
+I/  MyLayout:   dispatchTouchEvent ACTION_DOWN End with false
 I/Activity:     onTouchEvent ACTION_DOWN
 I/Activity:     dispatchTouchEvent ACTION_DOWN End with false
 I/Activity:     dispatchTouchEvent ACTION_UP Start
@@ -129,10 +131,10 @@ I/Activity:     dispatchTouchEvent ACTION_UP End with false
 
 ```
 I/Activity:     dispatchTouchEvent ACTION_DOWN Start
-I/  MyLayout:   dispatchTouchEvent ACTION_DOWN End with true
+I/  MyLayout:   dispatchTouchEvent ACTION_DOWN End with true
 I/Activity:     dispatchTouchEvent ACTION_DOWN End with true
 I/Activity:     dispatchTouchEvent ACTION_UP Start
-I/  MyLayout:   dispatchTouchEvent ACTION_UP End with true
+I/  MyLayout:   dispatchTouchEvent ACTION_UP End with true
 I/Activity:     dispatchTouchEvent ACTION_UP End with true
 ```
 
@@ -288,22 +290,24 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
+<img src="../Screenshot/eventdispatch/my_layout.png" style="zoom:25%;" />
+
 当MyLayout的 `onInterceptTouchEvent` 方法返回false时，点击button，打印的Log如下：
 
 ```
 I/Activity:     dispatchTouchEvent ACTION_DOWN Start
-I/  MyLayout:   dispatchTouchEvent ACTION_DOWN Start
-I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN Start
-I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN End with false
-I/  MyLayout:   dispatchTouchEvent ACTION_DOWN End with true
+I/  MyLayout:   dispatchTouchEvent ACTION_DOWN Start
+I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN Start
+I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN End with false
+I/  MyLayout:   dispatchTouchEvent ACTION_DOWN End with true
 I/Activity:     dispatchTouchEvent ACTION_DOWN End with true
 I/Activity:     dispatchTouchEvent ACTION_UP Start
-I/  MyLayout:   dispatchTouchEvent ACTION_UP Start
-I/  MyLayout:   onInterceptTouchEvent ACTION_UP Start
-I/  MyLayout:   onInterceptTouchEvent ACTION_UP End with false
-I/  MyLayout:   dispatchTouchEvent ACTION_UP End with true
+I/  MyLayout:   dispatchTouchEvent ACTION_UP Start
+I/  MyLayout:   onInterceptTouchEvent ACTION_UP Start
+I/  MyLayout:   onInterceptTouchEvent ACTION_UP End with false
+I/  MyLayout:   dispatchTouchEvent ACTION_UP End with true
 I/Activity:     dispatchTouchEvent ACTION_UP End with true
-I/  MyLayout:   onClick
+I/  MyLayout:   onClick
 ```
 
 可以看出，此时按钮的点击事件触发，但是MyLayout的 `onTouchEvent` 方法未被调用。说明MyLayout并没有拦截事件，而是将它传递给了button。
@@ -312,12 +316,12 @@ I/  MyLayout:   onClick
 
 ```
 I/Activity:     dispatchTouchEvent ACTION_DOWN Start
-I/  MyLayout:   dispatchTouchEvent ACTION_DOWN Start
-I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN Start
-I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN End with true
-I/  MyLayout:   onTouchEvent ACTION_DOWN Start
-I/  MyLayout:   onTouchEvent ACTION_DOWN End with false
-I/  MyLayout:   dispatchTouchEvent ACTION_DOWN End with false
+I/  MyLayout:   dispatchTouchEvent ACTION_DOWN Start
+I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN Start
+I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN End with true
+I/  MyLayout:   onTouchEvent ACTION_DOWN Start
+I/  MyLayout:   onTouchEvent ACTION_DOWN End with false
+I/  MyLayout:   dispatchTouchEvent ACTION_DOWN End with false
 I/Activity:     onTouchEvent ACTION_DOWN
 I/Activity:     dispatchTouchEvent ACTION_DOWN End with false
 I/Activity:     dispatchTouchEvent ACTION_UP Start
@@ -375,7 +379,7 @@ if语句块表示如果该视图不位于顶部，并且有属性设置不在顶
 
 `MotionEvent.FLAG_WINDOW_IS_OBSCURED` 为true表示该窗口被隐藏。
 
-当没有设置相关属性时，`onFilterTouchEventForSecurity(ev)` 方法返回true。因此分发过程都会进入`if (onFilterTouchEventForSecurity(ev))` 语句块内，其内容如下：
+当没有设置相关属性时，`onFilterTouchEventForSecurity(ev)` 方法返回true。因此分发过程都会进入 `if (onFilterTouchEventForSecurity(ev))` 语句块内，其内容如下：
 
 ```java
 if (onFilterTouchEventForSecurity(ev)) {
@@ -412,7 +416,7 @@ if (onFilterTouchEventForSecurity(ev)) {
 }
 ```
 
-`disallowIntercept` 代表禁用事件拦截功能，默认为false。进入到`if (!disallowIntercept)` 语句块内，调用 `onInterceptTouchEvent` 方法。
+`disallowIntercept` 代表禁用事件拦截功能，默认为false。进入到 `if (!disallowIntercept)` 语句块内，调用 `onInterceptTouchEvent` 方法。
 
 `onInterceptTouchEvent` 方法如下：
 
@@ -432,7 +436,7 @@ public boolean onInterceptTouchEvent(MotionEvent ev) {
 }
 ```
 
-在上一个if语句块内`intercepted = onInterceptTouchEvent(ev)`，如果不拦截，则 `intercepted` 为false，进入`if (!canceled && !intercepted)` 语句块。
+在上一个if语句块内`intercepted = onInterceptTouchEvent(ev)`，如果不拦截，则 `intercepted` 为false，进入 `if (!canceled && !intercepted)` 语句块。
 
 ```java
 if (onFilterTouchEventForSecurity(ev)) {
@@ -599,52 +603,54 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
+<img src="../Screenshot/eventdispatch/my_button.png" style="zoom:25%;" />
+
 当myButton的 `onTouch` 返回false时，打印的Log如下：
 
 ```
 I/Activity:     dispatchTouchEvent ACTION_DOWN Start
-I/  MyLayout:   dispatchTouchEvent ACTION_DOWN Start
-I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN Start
-I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN End with false
-I/    MyButton: dispatchTouchEvent ACTION_DOWN Start
-I/    MyButton: onTouch ACTION_DOWN
-I/    MyButton: onTouchEvent ACTION_DOWN
-I/    MyButton: dispatchTouchEvent ACTION_DOWN End with true
-I/  MyLayout:   dispatchTouchEvent ACTION_DOWN End with true
+I/  MyLayout:   dispatchTouchEvent ACTION_DOWN Start
+I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN Start
+I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN End with false
+I/    MyButton: dispatchTouchEvent ACTION_DOWN Start
+I/    MyButton: onTouch ACTION_DOWN
+I/    MyButton: onTouchEvent ACTION_DOWN
+I/    MyButton: dispatchTouchEvent ACTION_DOWN End with true
+I/  MyLayout:   dispatchTouchEvent ACTION_DOWN End with true
 I/Activity:     dispatchTouchEvent ACTION_DOWN End with true
 I/Activity:     dispatchTouchEvent ACTION_UP Start
-I/  MyLayout:   dispatchTouchEvent ACTION_UP Start
-I/  MyLayout:   onInterceptTouchEvent ACTION_UP Start
-I/  MyLayout:   onInterceptTouchEvent ACTION_UP End with false
-I/    MyButton: dispatchTouchEvent ACTION_UP Start
-I/    MyButton: onTouch ACTION_UP
-I/    MyButton: onTouchEvent ACTION_UP
-I/    MyButton: dispatchTouchEvent ACTION_UP End with true
-I/  MyLayout:   dispatchTouchEvent ACTION_UP End with true
+I/  MyLayout:   dispatchTouchEvent ACTION_UP Start
+I/  MyLayout:   onInterceptTouchEvent ACTION_UP Start
+I/  MyLayout:   onInterceptTouchEvent ACTION_UP End with false
+I/    MyButton: dispatchTouchEvent ACTION_UP Start
+I/    MyButton: onTouch ACTION_UP
+I/    MyButton: onTouchEvent ACTION_UP
+I/    MyButton: dispatchTouchEvent ACTION_UP End with true
+I/  MyLayout:   dispatchTouchEvent ACTION_UP End with true
 I/Activity:     dispatchTouchEvent ACTION_UP End with true
-I/    MyButton: onClick
+I/    MyButton: onClick
 ```
 
 `onTouch`返回true时，打印的Log如下：
 
 ```
 I/Activity:     dispatchTouchEvent ACTION_DOWN Start
-I/  MyLayout:   dispatchTouchEvent ACTION_DOWN Start
-I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN Start
-I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN End with false
-I/    MyButton: dispatchTouchEvent ACTION_DOWN Start
-I/    MyButton: onTouch ACTION_DOWN
-I/    MyButton: dispatchTouchEvent ACTION_DOWN End with true
-I/  MyLayout:   dispatchTouchEvent ACTION_DOWN End with true
+I/  MyLayout:   dispatchTouchEvent ACTION_DOWN Start
+I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN Start
+I/  MyLayout:   onInterceptTouchEvent ACTION_DOWN End with false
+I/    MyButton: dispatchTouchEvent ACTION_DOWN Start
+I/    MyButton: onTouch ACTION_DOWN
+I/    MyButton: dispatchTouchEvent ACTION_DOWN End with true
+I/  MyLayout:   dispatchTouchEvent ACTION_DOWN End with true
 I/Activity:     dispatchTouchEvent ACTION_DOWN End with true
 I/Activity:     dispatchTouchEvent ACTION_UP Start
-I/  MyLayout:   dispatchTouchEvent ACTION_UP Start
-I/  MyLayout:   onInterceptTouchEvent ACTION_UP Start
-I/  MyLayout:   onInterceptTouchEvent ACTION_UP End with false
-I/    MyButton: dispatchTouchEvent ACTION_UP Start
-I/    MyButton: onTouch ACTION_UP
-I/    MyButton: dispatchTouchEvent ACTION_UP End with true
-I/  MyLayout:   dispatchTouchEvent ACTION_UP End with true
+I/  MyLayout:   dispatchTouchEvent ACTION_UP Start
+I/  MyLayout:   onInterceptTouchEvent ACTION_UP Start
+I/  MyLayout:   onInterceptTouchEvent ACTION_UP End with false
+I/    MyButton: dispatchTouchEvent ACTION_UP Start
+I/    MyButton: onTouch ACTION_UP
+I/    MyButton: dispatchTouchEvent ACTION_UP End with true
+I/  MyLayout:   dispatchTouchEvent ACTION_UP End with true
 I/Activity:     dispatchTouchEvent ACTION_UP End with true
 ```
 
@@ -775,11 +781,253 @@ public boolean performClick() {
 }
 ```
 
-如果View设置了 `OnClickListener`，则会执行12行，调用 `onClick` 方法。这印证了上面Demo演示中的分析：`onClick` 方法在 `onTouchEvent` 方法中被调用。
+如果View设置了 `OnClickListener`，则会执行12行，调用 `onClick` 方法。这印证了上面Demo演示中的分析：`onClick` 方法在 `onTouchEvent` 方法中被调用。因此，当View设置了`OnTouchListener` 和 `OnClickListener`，事件分发的优先级为 `OnTouchListener.onTouch` > `onTouchEvent` > `OnClickListener.onClick`。
 
 #### 3. 分发流程图
 
 ![](../Screenshot/eventdispatch/view_dispatch.svg)
+
+
+
+### 五、滑动冲突
+
+#### 1. 常见场景
+
+常见的产生滑动冲突的两种场景如下：
+
+![滑动冲突](../Screenshot/eventdispatch/slide_conflict.svg)
+
+（1）内外滑动方向不一致
+
+主要产生于ViewPager与Fragment组合，Fragment内又使用RecyclerView的场景。ViewPager内部已经处理了冲突，使用时无需处理。而如果使用自定义可水平滑动的ViewGroup，则必须手动处理冲突。
+
+解决这种冲突，一般根据滑动过程中两点之间的水平和垂直距离差来判断由谁拦截事件。
+
+（2）内外滑动方向一致
+
+主要产生于ScrollView嵌套的场景或ScrollView内嵌RecyclerView的场景。例如两个ScrollView嵌套时，只有外层可以滑动。
+
+#### 2. 解决方式
+
+（1）外部拦截法：事件先经过父容器（ViewGroup）处理，如果父容器需要该事件则拦截。这种方式符合事件分发机制，可以通过重写 `onInterceptTouchEvent` 方法进行处理。伪代码如下：
+
+```kotlin
+override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
+    var intercepted = false
+    val x = event.x.toInt()
+    val y = event.y.toInt()
+    when (event.action) {
+        MotionEvent.ACTION_DOWN -> {
+            intercepted = false
+        }
+        MotionEvent.ACTION_MOVE -> {
+            intercepted = if (满足父容器的拦截要求) {
+                true
+            } else {
+                false
+            }
+        }
+    }
+    mLastXIntercept = x
+    mLastYIntercept = y
+    return intercepted
+}
+```
+
+（2）内部拦截法：父容器不拦截任何事件，所有事件都传递给子元素（View），如果需要该事件则直接消耗，否则交给父容器处理。这种方式不符合事件分发机制，需要重写 `dispatchTouchEvent` 方法并调用父容器的  `requestDisallowInterceptTouchEvent` 方法，决定是否需要父容器对事件进行拦截。伪代码如下：
+
+```kotlin
+override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+    val x = event.x.toInt()
+    val y = event.y.toInt()
+    when (event.action) {
+        MotionEvent.ACTION_DOWN -> {
+            parent.requestDisallowInterceptTouchEvent(true)
+        }
+        MotionEvent.ACTION_MOVE -> {
+            val deltaX = x - mLastX
+            val deltaY = y - mLastY
+            if (父容器需要此类点击事件) {
+                parent.requestDisallowInterceptTouchEvent(false)
+            }
+        }
+        MotionEvent.ACTION_UP -> {}
+        else -> {}
+    }
+    mLastX = x
+    mLastY = y
+    return super.dispatchTouchEvent(event)
+}
+```
+
+父容器需要重写 `onInterceptTouchEvent` 方法：
+
+```kotlin
+override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
+    var intercepted = false
+    val action = event.action
+    if (action == MotionEvent.ACTION_DOWN) {
+        super.onInterceptTouchEvent(ev)
+        return false
+    }
+    return true
+}
+```
+
+#### 3. Demo演示
+
+##### 滑动方向一致
+
+自定义MyScrollView继承自ScrollView，嵌套使用时，将会产生只有外层ScrollView可以滑动的情况，产生了滑动冲突。此时MyScrollView既是父容器也是子元素。
+
+(1) 外部拦截法
+
+将MyScrollView当作父容器，重写 `onInterceptTouchEvent` 方法，返回false即可。
+
+```kotlin
+override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+    return false
+}
+```
+
+(2) 内部拦截法
+
+将MyScrollView当作子元素，重写 `dispatchTouchEvent` 方法。
+
+```kotlin
+override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+    when(ev?.action) {
+        MotionEvent.ACTION_DOWN -> {
+            parent.requestDisallowInterceptTouchEvent(true)
+        }
+    }
+    return super.dispatchTouchEvent(ev)
+}
+```
+
+父容器（同样是MyScrollView）重写 `onInterceptTouchEvent` 方法。
+
+```kotlin
+override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+    if (ev?.action == MotionEvent.ACTION_DOWN) {
+        super.onInterceptTouchEvent(ev)
+        return false
+    }
+    return true
+}
+```
+
+##### 滑动方向不一致
+
+自定义MyViewPager继承自ViewPager，重写 `onInterceptTouchEvent` 方法并返回false。ViewPager每个fragment中放有一个RecyclerView，此时RecyclerView可以正常上下滑动，而如果左右滑动，ViewPager中的fragment并不会进行切换，产生了滑动冲突。
+
+```xml
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+(1) 外部拦截法
+
+重写 `onInterceptTouchEvent` 方法如下：
+
+```kotlin
+class MyViewPager : ViewPager {
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+
+    private var mLastXIntercept = 0
+    private var mLastYIntercept = 0
+
+    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+        var intercepted = false
+        val x = ev.x.toInt()
+        val y = ev.y.toInt()
+        when (ev.action) {
+            MotionEvent.ACTION_DOWN -> {
+                intercepted = false
+                super.onInterceptTouchEvent(ev)
+            }
+            MotionEvent.ACTION_MOVE -> {
+                val deltaX = x - mLastXIntercept
+                val deltaY = y - mLastYIntercept
+                intercepted = abs(deltaX) > abs(deltaY)
+            }
+            MotionEvent.ACTION_UP -> {
+                intercepted = false
+            }
+        }
+        mLastXIntercept =  x
+        mLastYIntercept =  y
+        return intercepted
+    }
+}
+```
+
+解决冲突的主要逻辑在 `MotionEvent.ACTION_MOVE` 中：如果水平距离大于竖直距离，表示产生了水平滑动，MyViewPager拦截事件。
+
+(2) 内部拦截法
+
+自定义MyRecyclerView继承自RecyclerView，重写 `dispatchTouchEvent` 方法：
+
+```kotlin
+class MyRecyclerView: RecyclerView {
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+
+    private var mLastX = 0
+    private var mLastY = 0
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val x = ev.x.toInt()
+        val y = ev.y.toInt()
+        when (ev.action) {
+            MotionEvent.ACTION_DOWN -> {
+                parent.requestDisallowInterceptTouchEvent(true)
+            }
+            MotionEvent.ACTION_MOVE -> {
+                val deltaX = x - mLastX
+                val deltaY = y - mLastY
+                if (abs(deltaX) > abs(deltaY)) {
+                    parent.requestDisallowInterceptTouchEvent(false)
+                }
+            }
+            MotionEvent.ACTION_UP -> {}
+            else -> {}
+        }
+        mLastX = x
+        mLastY = y
+        return super.dispatchTouchEvent(ev)
+    }
+
+}
+```
+
+自定义BadViewPager继承自ViewPager，重写 `onInterceptTouchEvent` 方法：
+
+```kotlin
+override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+    if (ev.action == MotionEvent.ACTION_DOWN) {
+        super.onInterceptTouchEvent(ev)
+        return false
+    }
+    return true
+}
+```
+
+解决冲突的主要逻辑同样在 `MotionEvent.ACTION_MOVE` 中：如果产生水平滑动，BadViewPager拦截事件；如果产生竖直距离，MyRecyclerView拦截事件。
 
 
 
