@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:divider="?android:dividerVertical"
+    android:orientation="vertical"
+    android:paddingHorizontal="32dp"
+    android:showDividers="middle">
+
+    <com.example.eventdispatch.widget.MyLayout
+        android:id="@+id/my_layout"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_marginVertical="32dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center">
+
+        <com.example.eventdispatch.widget.MyButton
+            android:id="@+id/my_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/my_button_text" />
+    </com.example.eventdispatch.widget.MyLayout>
+
+    <include
+        layout="@layout/method_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" />
+</LinearLayout>

@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">EventDispatch</string>
+    <string name="my_button_text">My Button</string>
+
+    <string name="event_dispatch">事件分发</string>
+    <string name="same_sliding">方向一致冲突</string>
+    <string name="different_sliding">方向不一致冲突</string>
+
+    <string name="activity_on_touch_event">Activity onTouchEvent</string>
+    <string name="layout_on_intercept_touch_event">MyLayout onInterceptTouchEvent</string>
+    <string name="layout_on_touch_event">MyLayout onTouchEvent</string>
+    <string name="button_on_touch">MyButton onTouch</string>
+
+    <string name="with_conflict">不解决冲突</string>
+    <string name="outer_intercept">外部拦截法</string>
+    <string name="inner_intercept">内部拦截法</string>
+
+    <string name="conflict">Conflict</string>
+    <string name="outer">Outer</string>
+    <string name="inner">Inner</string>
+
+</resources>

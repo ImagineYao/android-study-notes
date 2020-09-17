@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@+id/nav_event">
+
+    <fragment
+        android:id="@+id/nav_event"
+        android:name="com.example.eventdispatch.ui.dispatch.DispatchFragment"
+        android:label="@string/event_dispatch"
+        tools:layout="@layout/fragment_event_dispatch">
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_same"
+        android:name="com.example.eventdispatch.ui.samesliding.SameDirectionFragment"
+        android:label="@string/same_sliding"
+        tools:layout="@layout/fragment_same_direction" />
+
+    <fragment
+        android:id="@+id/nav_different"
+        android:name="com.example.eventdispatch.ui.differentsliding.DifferentDirectionFragment"
+        android:label="@string/different_sliding"
+        tools:layout="@layout/fragment_different_direction" />
+</navigation>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:divider="?android:dividerVertical"
+    android:orientation="vertical"
+    android:showDividers="middle">
+
+    <include layout="@layout/conflict_selector" />
+
+    <com.example.eventdispatch.ui.differentsliding.ConflictViewPager
+        android:id="@+id/conflict_viewpager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/conflict_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.example.eventdispatch.ui.differentsliding.ConflictViewPager>
+
+    <com.example.eventdispatch.ui.differentsliding.OuterViewPager
+        android:id="@+id/outer_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/outer_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.example.eventdispatch.ui.differentsliding.OuterViewPager>
+
+    <com.example.eventdispatch.ui.differentsliding.InnerViewPager
+        android:id="@+id/inner_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/inner_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.example.eventdispatch.ui.differentsliding.InnerViewPager>
+</LinearLayout>

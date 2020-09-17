@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_event"
+        android:title="@string/event_dispatch" />
+    <item
+        android:id="@+id/menu_same_direction"
+        android:title="@string/same_sliding" />
+    <item
+        android:id="@+id/menu_different_direction"
+        android:title="@string/different_sliding" />
+</menu>

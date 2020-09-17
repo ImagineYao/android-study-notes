@@ -189,7 +189,7 @@ DecorView的 `superDispatchTouchEvent` 方法如下：
  * DecorView.java
  */
 public class DecorView extends FrameLayout implements RootViewSurfaceTaker, WindowCallbacks{
-    // // ...
+    // ...
     // Line464-466
     public boolean superDispatchTouchEvent(MotionEvent event) {
         return super.dispatchTouchEvent(event);
@@ -467,7 +467,7 @@ if (onFilterTouchEventForSecurity(ev)) {
 
                     // 调用子元素的dispatchTouchEvent方法
                     resetCancelNextUpFlag(child);
-                    if (dispatchTransformedTouchEvent(ev, false, child, idBitsToAssign){
+                    if (dispatchTransformedTouchEvent(ev, false, child, idBitsToAssign)) {
                         // ...
                     }
                     // ...
@@ -797,19 +797,19 @@ public boolean performClick() {
 
 ![滑动冲突](../Screenshot/eventdispatch/slide_conflict.svg)
 
-（1）内外滑动方向不一致
+(1) 内外滑动方向不一致
 
 主要产生于ViewPager与Fragment组合，Fragment内又使用RecyclerView的场景。ViewPager内部已经处理了冲突，使用时无需处理。而如果使用自定义可水平滑动的ViewGroup，则必须手动处理冲突。
 
 解决这种冲突，一般根据滑动过程中两点之间的水平和垂直距离差来判断由谁拦截事件。
 
-（2）内外滑动方向一致
+(2) 内外滑动方向一致
 
 主要产生于ScrollView嵌套的场景或ScrollView内嵌RecyclerView的场景。例如两个ScrollView嵌套时，只有外层可以滑动。
 
 #### 2. 解决方式
 
-（1）外部拦截法：事件先经过父容器（ViewGroup）处理，如果父容器需要该事件则拦截。这种方式符合事件分发机制，可以通过重写 `onInterceptTouchEvent` 方法进行处理。伪代码如下：
+(1) 外部拦截法：事件先经过父容器（ViewGroup）处理，如果父容器需要该事件则拦截。这种方式符合事件分发机制，可以通过重写 `onInterceptTouchEvent` 方法进行处理。伪代码如下：
 
 ```kotlin
 override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
@@ -827,6 +827,9 @@ override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
                 false
             }
         }
+        MotionEvent.ACTION_UP -> {
+            intercepted = false
+        }
     }
     mLastXIntercept = x
     mLastYIntercept = y
@@ -834,7 +837,9 @@ override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
 }
 ```
 
-（2）内部拦截法：父容器不拦截任何事件，所有事件都传递给子元素（View），如果需要该事件则直接消耗，否则交给父容器处理。这种方式不符合事件分发机制，需要重写 `dispatchTouchEvent` 方法并调用父容器的  `requestDisallowInterceptTouchEvent` 方法，决定是否需要父容器对事件进行拦截。伪代码如下：
+滑动冲突的处理逻辑主要表现为对ACTION_MOVE事件的处理，如果满足父容器的拦截条件则拦截该事件。而对于ACTION_DOWN事件，必须返回false，不对其进行拦截。否则后续事件全部被父容器拦截，无法传递给子元素。ACTION_UP事件没有太大意义，也需返回false。
+
+(2) 内部拦截法：父容器不拦截任何事件，所有事件都传递给子元素（View），如果需要该事件则直接消耗，否则交给父容器处理。这种方式不符合事件分发机制，需要重写 `dispatchTouchEvent` 方法并调用父容器的  `requestDisallowInterceptTouchEvent` 方法，决定是否需要父容器对事件进行拦截。伪代码如下：
 
 ```kotlin
 override fun dispatchTouchEvent(event: MotionEvent): Boolean {
@@ -852,7 +857,6 @@ override fun dispatchTouchEvent(event: MotionEvent): Boolean {
             }
         }
         MotionEvent.ACTION_UP -> {}
-        else -> {}
     }
     mLastX = x
     mLastY = y
@@ -917,34 +921,18 @@ override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
 }
 ```
 
+> 注：可以直接使用NestedScrollView代替ScrollView，该组件支持嵌套使用，无需手动解决滑动冲突。
+
 ##### 滑动方向不一致
 
-自定义MyViewPager继承自ViewPager，重写 `onInterceptTouchEvent` 方法并返回false。ViewPager每个fragment中放有一个RecyclerView，此时RecyclerView可以正常上下滑动，而如果左右滑动，ViewPager中的fragment并不会进行切换，产生了滑动冲突。
-
-```xml
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
-```
+自定义ConflictViewPager继承自ViewPager，重写 `onInterceptTouchEvent` 方法返回false。ConflictViewPager中的每个fragment中放有一个RecyclerView，此时RecyclerView可以正常上下滑动；而如果左右滑动，ConflictViewPager中的fragment并不会进行切换，产生滑动冲突。
 
 (1) 外部拦截法
 
 重写 `onInterceptTouchEvent` 方法如下：
 
 ```kotlin
-class MyViewPager : ViewPager {
+class OuterViewPager : ViewPager {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
@@ -976,7 +964,7 @@ class MyViewPager : ViewPager {
 }
 ```
 
-解决冲突的主要逻辑在 `MotionEvent.ACTION_MOVE` 中：如果水平距离大于竖直距离，表示产生了水平滑动，MyViewPager拦截事件。
+解决冲突的主要逻辑在 `MotionEvent.ACTION_MOVE` 中：如果水平距离大于竖直距离，表示产生了水平滑动，OuterViewPager拦截事件；如果产生竖直滑动，OuterViewPager不拦截事件，事件会传递给RecyclerView。
 
 (2) 内部拦截法
 
@@ -1011,11 +999,10 @@ class MyRecyclerView: RecyclerView {
         mLastY = y
         return super.dispatchTouchEvent(ev)
     }
-
 }
 ```
 
-自定义BadViewPager继承自ViewPager，重写 `onInterceptTouchEvent` 方法：
+自定义InnerViewPager继承自ViewPager，重写 `onInterceptTouchEvent` 方法：
 
 ```kotlin
 override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
@@ -1027,7 +1014,7 @@ override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
 }
 ```
 
-解决冲突的主要逻辑同样在 `MotionEvent.ACTION_MOVE` 中：如果产生水平滑动，BadViewPager拦截事件；如果产生竖直距离，MyRecyclerView拦截事件。
+解决冲突的主要逻辑同样在 `MotionEvent.ACTION_MOVE` 中：如果产生水平滑动，InnerViewPager拦截事件；如果产生竖直滑动，MyRecyclerView拦截事件。
 
 
 
