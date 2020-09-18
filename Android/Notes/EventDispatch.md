@@ -113,7 +113,7 @@ class MyLayout : FrameLayout {
 </com.example.eventdispatch.ui.MyLayout>
 ```
 
-<img src="../Screenshot/eventdispatch/my_activity.png" style="zoom:25%;" />
+<img src="../Screenshot/eventdispatch/my_activity.png" width="200" />
 
 当MyLayout `dispatchTouchEvent` 返回false时，表示其不对事件进行分发。ACTION_DOWN事件传递到MyLayout时，`dispatchTouchEvent` 被调用，返回false，事件返回给Activity，Activity的 `onTouchEvent` 被调用。当ACTION_MOVE或ACTION_UP事件到来时，由于上一个事件由Activity处理，因此该事件不再向下传递，直接交给Activity处理。点击MyLayout，打印的Log如下：
 
@@ -290,7 +290,7 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
-<img src="../Screenshot/eventdispatch/my_layout.png" style="zoom:25%;" />
+<img src="../Screenshot/eventdispatch/my_layout.png" width="200" />
 
 当MyLayout的 `onInterceptTouchEvent` 方法返回false时，点击button，打印的Log如下：
 
@@ -603,7 +603,7 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
-<img src="../Screenshot/eventdispatch/my_button.png" style="zoom:25%;" />
+<img src="../Screenshot/eventdispatch/my_button.png" width="200" />
 
 当myButton的 `onTouch` 返回false时，打印的Log如下：
 
